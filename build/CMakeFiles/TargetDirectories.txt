@@ -1,0 +1,3 @@
+/home/po4k/homework_2/build/CMakeFiles/StringTest.dir
+/home/po4k/homework_2/build/CMakeFiles/edit_cache.dir
+/home/po4k/homework_2/build/CMakeFiles/rebuild_cache.dir

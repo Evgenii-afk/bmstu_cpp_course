@@ -1,15 +1,11 @@
-cmake_minimum_required(VERSION 3.28)
-project(bmstu_cpp_course)
+cmake_minimum_required(VERSION 3.10)
+project(StringTest)
 
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG        release-1.12.0
-)
-FetchContent_MakeAvailable(googletest)
+set(CMAKE_CXX_STANDARD 11)
 
-enable_testing()
-include(GoogleTest)
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
-add_subdirectory(tasks)
+add_executable(StringTest homework_2.cpp StringTest.cpp)
+
+target_link_libraries(StringTest ${GTEST_LIBRARIES} pthread)

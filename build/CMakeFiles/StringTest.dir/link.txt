@@ -1,0 +1,1 @@
+/usr/bin/g++ -Wl,--dependency-file=CMakeFiles/StringTest.dir/link.d CMakeFiles/StringTest.dir/homework_2.cpp.o CMakeFiles/StringTest.dir/StringTest.cpp.o -o StringTest  /usr/lib/x86_64-linux-gnu/libgtest.a -lpthread
