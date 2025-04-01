@@ -1,29 +1,25 @@
-#include "str2int.h"
 #include <assert.h>
+#include "str2int.h"
 #include "stdio.h"
 
-int str2int(const char* str)
-{
-	int len=0;
-	int is_negative=0;
-	int start=0;
-	int res=0;
+int str2int(const char *str) {
+  int znak = 1;
+  int result = 0;
 
-	while(str[len]!='\0'){
-		len++;
-	}
+  if (*str == '-'){
+    znak = -1;
+    str++;
+  } else if (*str == '+') {
+    str++;
+  }
 
-	if(str[0]=='-'){
-		is_negative=1;
-		start++;
-	}else if(str[0]=='+'){
-		start++;
-	}
-
-	while(str[start]!='\0'){
-		res+=res*10 + str[len]+'0';
-	}
-
-	return res;
-
+  int count = 0;
+  while (*str != '\0') {
+    result = result * 10 + (*str - '0');
+    count += 1;
+    str++;
+    assert(znak == -1 && result == -2147483648 || znak == -1 && result >= 0 && count <= 9 || znak == 1 && result >= 0);
+  }
+  assert(count > 0);
+  return result * znak;
 }
