@@ -485,6 +485,16 @@ TEST(BidirectLinkedListTests, swap)
 	ASSERT_EQ(list_1, (bmstu::list<int>{-1, -2}));
 }
 
+TEST(BidirectLinkedListTests, reverse) 
+{
+    bmstu::list<int> list_1{1, 2, 3};
+    list_1.reverse().reverse();
+    ASSERT_EQ(list_1, (bmstu::list<int>{1, 2, 3}));
+}
+
+
+
+
 TEST(BidirectLinkedListTests, swap2)
 {
 	bmstu::list<int> first;

@@ -15,9 +15,7 @@ class list
 		node() = default;
 
 		node(node* prev, const T& value, node* next)
-			: value_(value), next_node_(next), prev_node_(prev)
-		{
-		}
+			: value_(value), next_node_(next), prev_node_(prev) {}
 
 		T value_;
 		node* next_node_ = nullptr;
@@ -224,25 +222,8 @@ class list
 		}
 	}
 
-	list(list&& other) noexcept : size_(other.size_)
-	{
-		head_.next_node_ = other.head_.next_node_;
-		tail_.prev_node_ = other.tail_.prev_node_;
-
-		if (head_.next_node_ != &other.tail_)
-		{
-			head_.next_node_->prev_node_ = &head_;
-			tail_.prev_node_->next_node_ = &tail_;
-		}
-		else
-		{
-			head_.next_node_ = &tail_;
-			tail_.prev_node_ = &head_;
-		}
-
-		other.head_.next_node_ = &other.tail_;
-		other.tail_.prev_node_ = &other.head_;
-		other.size_ = 0;
+	list(list&& other) noexcept : list() {
+		swap(other);
 	}
 
 	~list() { clear(); }
@@ -257,36 +238,35 @@ class list
 		return *this;
 	}
 
-	list& operator=(list&& other) noexcept
-	{
-		if (this != &other)
-		{
-			clear();
-			head_.next_node_ = other.head_.next_node_;
-			tail_.prev_node_ = other.tail_.prev_node_;
-			size_ = other.size_;
-
-			if (head_.next_node_ != &other.tail_)
-			{
-				head_.next_node_->prev_node_ = &head_;
-				tail_.prev_node_->next_node_ = &tail_;
-			}
-			else
-			{
-				head_.next_node_ = &tail_;
-				tail_.prev_node_ = &head_;
-			}
-
-			other.head_.next_node_ = &other.tail_;
-			other.tail_.prev_node_ = &other.head_;
-			other.size_ = 0;
+	list& operator=(list&& other) noexcept {
+		if (this != &other) {
+			list temp(std::move(other));
+			swap(temp);
 		}
 		return *this;
 	}
 
+
 	void push_back(const T& value) { insert(end(), value); }
 
 	void push_front(const T& value) { insert(begin(), value); }
+
+ list& reverse() noexcept {
+        if (size_ <= 1) {
+            return *this;
+        }
+        
+        node* current = head_.next_node_;
+        while (current != &tail_) {
+            std::swap(current->prev_node_, current->next_node_);
+            current = current->prev_node_; 
+        }
+        std::swap(head_.next_node_, tail_.prev_node_);
+        head_.next_node_->prev_node_ = &head_;
+        tail_.prev_node_->next_node_ = &tail_;
+        
+        return *this;
+    }
 
 	void pop_back()
 	{
@@ -458,26 +438,6 @@ class list
 	size_t size_ = 0;
 	node head_;
 	node tail_;
-
-	static bool lexicographical_compare_(const list<T>& l, const list<T>& r)
-	{
-		auto it1 = l.begin();
-		auto it2 = r.begin();
-		while (it1 != l.end() && it2 != r.end())
-		{
-			if (*it1 < *it2)
-			{
-				return true;
-			}
-			if (*it2 < *it1)
-			{
-				return false;
-			}
-			++it1;
-			++it2;
-		}
-		return (it1 == l.end()) && (it2 != r.end());
-	}
 };
 
 template <typename T>
