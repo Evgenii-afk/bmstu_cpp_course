@@ -57,6 +57,8 @@ class list
 			return tmp;
 		}
 
+		
+
 		iterator operator--(int) override
 		{
 			iterator tmp = *this;
@@ -226,6 +228,30 @@ class list
 		swap(other);
 	}
 
+	list& operator+=(list& other) noexcept {
+		node* last_current = tail_.prev_node_;
+		node* first_other = other.head_.next_node_;
+		node* last_other = other.tail_.prev_node_;
+		last_current->next_node_ = first_other;
+		first_other->prev_node_ = last_current;
+
+		last_other->next_node_ = &tail_;
+		tail_.prev_node_ = last_other;
+
+		size_ += other.size_;
+
+		other.head_.next_node_ = &other.tail_;
+		other.tail_.prev_node_ = &other.head_;
+		other.size_ = 0;
+
+		return *this;
+	}
+
+	list& operator+=(list&& other) noexcept {
+		return *this += other; 
+	}
+
+
 	~list() { clear(); }
 
 	list& operator=(const list& other)
@@ -392,30 +418,6 @@ class list
 		return true;
 	}
 
-	friend bool operator!=(const list& l, const list& r) { return !(l == r); }
-
-	friend auto operator<=>(const list& lhs, const list& rhs)
-	{
-		auto it1 = lhs.begin();
-		auto it2 = rhs.begin();
-		while (it1 != lhs.end() && it2 != rhs.end())
-		{
-			if (*it1 < *it2)
-			{
-				return std::strong_ordering::less;
-			}
-			if (*it2 < *it1)
-			{
-				return std::strong_ordering::greater;
-			}
-			++it1;
-			++it2;
-		}
-		return (it1 == lhs.end())
-				   ? ((it2 == rhs.end()) ? std::strong_ordering::equal
-										 : std::strong_ordering::less)
-				   : std::strong_ordering::greater;
-	}
 
 	friend std::ostream& operator<<(std::ostream& os, const list& other)
 	{

@@ -490,8 +490,22 @@ TEST(BidirectLinkedListTests, reverse)
     bmstu::list<int> list_1{1, 2, 3};
     list_1.reverse().reverse();
     ASSERT_EQ(list_1, (bmstu::list<int>{1, 2, 3}));
+
+	bmstu::list<int> list_2{1, 2, 3};
+	list_2.reverse();
+	ASSERT_EQ(list_2, (bmstu::list<int>{3, 2, 1}));
 }
 
+TEST(BidirectLinkedListTests, CopyAssign) 
+{
+    bmstu::list<int> list_1{1, 2, 3};
+    bmstu::list<int> list_2{999, 998, 997};
+    bmstu::list<int> list_expected{1, 2, 3, 999, 998, 997};
+    bmstu::list<int> list_expected2{};
+    list_1 += list_2;
+    ASSERT_EQ(list_1, list_expected); 
+    ASSERT_EQ(list_2, list_expected2); 
+}
 
 
 
