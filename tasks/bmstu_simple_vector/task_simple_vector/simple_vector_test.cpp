@@ -480,3 +480,29 @@ TEST(SimpleVector, PushBackCopyMove3)
 	auto it = v.begin();
 	it = nullptr;
 }
+
+struct NonCopypableSergey {
+ NonCopypableSergey() {
+  std::cout << "NonCopypableSergey() hello\n";
+ }
+ ~NonCopypableSergey() {
+  std::cout << "~NonCopypableSergey() goodbye\n";
+ }
+ NonCopypableSergey(const NonCopypableSergey& other_sergey) = delete;
+    NonCopypableSergey& operator=(const NonCopypableSergey& other_sergey) = delete;
+ NonCopypableSergey(NonCopypableSergey&& other_sergey)
+ {
+  std::cout << "NonCopypableSergey(&&) i am Sergey too\n";
+ };
+  NonCopypableSergey& operator=(NonCopypableSergey&& other_sergey)
+ {
+  std::cout << "NonCopypableSergey(&&) Something Sergey too\n";
+  return *this;
+ }
+
+};
+
+TEST(SimpleVector, PushBackCopySergey) {
+    bmstu::simple_vector<NonCopypableSergey> v;
+    v.push_back(NonCopypableSergey{});
+}
